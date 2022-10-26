@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DB2F6C75-9246-47D9-9BFA-B4569B5D3DDA}</ProjectGuid>
+    <ProjectGuid>{388E28F1-20A7-4B87-8EFF-7AFB919897AB}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ServerApp</RootNamespace>
-    <AssemblyName>ServerApp</AssemblyName>
+    <RootNamespace>Chat</RootNamespace>
+    <AssemblyName>Chat</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
