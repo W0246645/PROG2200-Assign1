@@ -85,7 +85,7 @@ namespace Chat
             {
                 Console.WriteLine("Client");
                 //var client = new Client();
-                Connect("127.0.0.1", "Hello World");
+                Connect("127.0.0.1");
             }
 
 
@@ -93,10 +93,11 @@ namespace Chat
             Console.Read();
         }
 
-        static void Connect(String server, String message)
+        static void Connect(String server)
         {
             try
             {
+                var quit = false;
                 // Create a TcpClient.
                 // Note, for this client to work you need to have a TcpServer
                 // connected to the same address as specified by the server, port
@@ -106,29 +107,45 @@ namespace Chat
                 // Prefer using declaration to ensure the instance is Disposed later.
                 TcpClient client = new TcpClient(server, port);
 
-                // Translate the passed message into ASCII and store it as a Byte array.
-                Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
-
                 // Get a client stream for reading and writing.
                 NetworkStream stream = client.GetStream();
 
-                // Send the message to the connected TcpServer.
-                stream.Write(data, 0, data.Length);
+                while (!quit)
+                {
+                    var key = Console.ReadKey();
+                    var message = "";
+                    if (key.Key == ConsoleKey.Escape)
+                    {
+                        quit = true;
+                        Console.WriteLine("You typed Escape to exit.");
+                        message = "Disconnected\nGoodbye!";
+                    }
+                    else if (key.Key == ConsoleKey.I)
+                    {
+                        Console.Write("Insertion Mode>>");
+                        message = Console.ReadLine();
+                    }
+                    // Translate the passed message into ASCII and store it as a Byte array.
+                        Byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
 
-                Console.WriteLine("Sent: {0}", message);
+                        // Send the message to the connected TcpServer.
+                        stream.Write(data, 0, data.Length);
 
-                // Receive the server response.
+                        Console.WriteLine("Sent: {0}", message);
 
-                // Buffer to store the response bytes.
-                data = new Byte[256];
+                        // Receive the server response.
 
-                // String to store the response ASCII representation.
-                String responseData = String.Empty;
+                        // Buffer to store the response bytes.
+                        data = new Byte[256];
 
-                // Read the first batch of the TcpServer response bytes.
-                Int32 bytes = stream.Read(data, 0, data.Length);
-                responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-                Console.WriteLine("Received: {0}", responseData);
+                        // String to store the response ASCII representation.
+                        String responseData = String.Empty;
+
+                        // Read the first batch of the TcpServer response bytes.
+                        Int32 bytes = stream.Read(data, 0, data.Length);
+                        responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
+                        Console.WriteLine("Received: {0}", responseData);
+                }       
 
                 // Explicit close is not necessary since TcpClient.Dispose() will be
                 // called automatically.
